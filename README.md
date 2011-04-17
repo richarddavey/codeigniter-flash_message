@@ -1,4 +1,4 @@
-# CodeIgniter-Registry
+# CodeIgniter-Flash_Message
 
 CodeIgniter-Flash_Message is a stack system for outputting messages.
 

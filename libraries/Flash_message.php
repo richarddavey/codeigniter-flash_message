@@ -193,7 +193,7 @@ class Flash_message {
 			$output .= $this->_htmlspecialchars ? htmlspecialchars($message) : $message;
 			$output .= '</div>';
 		}
-		return $ouput;
+		return $output;
 	}
 	
 	// --------------------------------------------------------------------
@@ -209,7 +209,7 @@ class Flash_message {
 		// set output
 		$output  = $this->display();
 		$output .= $this->form_errors($message);
-		return $ouput;
+		return $output;
 	}
 	
 	// --------------------------------------------------------------------
