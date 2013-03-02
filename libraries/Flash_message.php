@@ -189,6 +189,8 @@ class Flash_message {
 		// form validation
 		if (function_exists('validation_errors') AND validation_errors()) 
 		{
+                        // assigning the validation errors message to the message it self.
+                        $message = validation_errors();
 			$output  = '<div class="' . $this->_flash_message . ' ' . $this->_error_message . '">';
 			$output .= $this->_htmlspecialchars ? htmlspecialchars($message) : $message;
 			$output .= '</div>';
