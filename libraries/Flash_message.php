@@ -3,9 +3,9 @@
  * Flash_Message Class
  *
  * @package		Flash_Message
- * @version		1.0
+ * @version		1.1
  * @author 		Richard Davey <info@richarddavey.com>
- * @copyright 	Copyright (c) 2011, Richard Davey
+ * @copyright 	Copyright (c) 2013, Richard Davey
  * @link		https://github.com/richarddavey/codeigniter-flash_message
  */
 class Flash_message {
@@ -32,13 +32,15 @@ class Flash_message {
 	 * Grade states
 	 *
 	 */
-	private $_htmlspecialchars	= TRUE;
-	private $_session_var 		= 'flash_message';
-	private $_flash_message 	= 'flash_message';
-	private $_info_message 		= 'message_info';
-	private $_error_message 	= 'message_error';
-	private $_success_message	= 'message_success';
-	private $_warning_message 	= 'message_warning';
+	private $_htmlspecialchars		= TRUE;
+	private $_session_var 			= 'flash_message';
+	private $_flash_message 		= 'flash_message';
+	private $_flash_message_pre 	= '';
+	private $_flash_message_post 	= '';
+	private $_info_message 			= 'message_info';
+	private $_error_message 		= 'message_error';
+	private $_success_message		= 'message_success';
+	private $_warning_message 		= 'message_warning';
 	
 	/**
 	 * Constructor
@@ -158,7 +160,9 @@ class Flash_message {
 				$output .= '<div class="' . $this->_flash_message;
 				$output .= $message['type'] ? ' ' . $message['type'] : '';
 				$output .= '">';
+				$output .= $this->_flash_message_pre;
 				$output .= $this->_htmlspecialchars ? htmlspecialchars($message['message']) : $message['message'];
+				$output .= $this->_flash_message_post;
 				$output .= '</div>';	
 			}
 		}
@@ -173,7 +177,7 @@ class Flash_message {
 	 * @param string $message
 	 * @return string html
 	 */
-    function form_errors($message = '')
+    function form_errors($message = '', $include_errors = FALSE)
 	{
 		$this->CI->lang->load('flash_message');
 		
@@ -189,8 +193,11 @@ class Flash_message {
 		// form validation
 		if (function_exists('validation_errors') AND validation_errors()) 
 		{
+			if ($include_errors) $message .= '<ul>' . validation_errors('<li>', '</li>') . '</ul>';
 			$output  = '<div class="' . $this->_flash_message . ' ' . $this->_error_message . '">';
+			$output .= $this->_flash_message_pre;
 			$output .= $this->_htmlspecialchars ? htmlspecialchars($message) : $message;
+			$output .= $this->_flash_message_post;
 			$output .= '</div>';
 		}
 		return $output;
@@ -204,11 +211,11 @@ class Flash_message {
 	 * @param string $message
 	 * @return string html
 	 */
-    function show_all($message = '')
+    function show_all($message = '', $include_form_errors = FALSE)
 	{
 		// set output
 		$output  = $this->display();
-		$output .= $this->form_errors($message);
+		$output .= $this->form_errors($message, $include_form_errors);
 		return $output;
 	}
 	
